@@ -65,20 +65,22 @@ The application will be running at the following URL <http://localhost:8080/log4
 Investigate the Log4Shell vulnerability
 ----------------------------
 
-1. In the JSF page, enter the test payload described [here](https://log4shell.huntress.com/). For example: `${jndi:ldap://log4shell.huntress.com:1389/dccb9fc9-0d2f-45e1-be4d-abb7dc875d8f}`
-1. View the results for that payload, as described in the vulnerability tester. [For example.](https://log4shell.huntress.com/view/dccb9fc9-0d2f-45e1-be4d-abb7dc875d8f)
+1. Fetch a test payload from the Huntress Log4Shell tester page [here](https://log4shell.huntress.com/). For example: `${jndi:ldap://log4shell.huntress.com:1389/GENERATED_TOKEN_HERE}`
+1. In the JSF page located at `http://localhost:8080/log4shell-lab`, enter the Huntress Log4Shell payload obtained in the previous step.
+1. View the results for that payload, as described on the Huntress Log4Shell tester page. The URL will be formatted like so: [https://log4shell.huntress.com/view/GENERATED_TOKEN_HERE](https://log4shell.huntress.com/view/GENERATED_TOKEN_HERE). If the application is vulnerable, the test payload will result in an LDAP request sent to the Huntress page, which will be logged on the results page.
 
 Mitigation via Deployment Overlays
 ----------------------------
 
 This issue can be mitigated in JBoss EAP without recompiling the artifact via [Deployment Overlays](https://access.redhat.com/solutions/383393).
 
-1. In the JBoss CLI, execute the following command to overlay log4j-core: `deployment-overlay add --name=log4shellOverlay --content=/WEB-INF/lib/log4j-core-2.11.2.jar=/path/to/patched/log4j.jar --deployments=log4shell-lab.war --redeploy-affected`
-1. In the JBoss CLI, execute the following command to overlay log4j-api: `deployment-overlay add --name=log4shellApiOverlay --content=/WEB-INF/lib/log4j-api-2.11.2.jar=/path/to/patched/log4j.jar --deployments=log4shell-lab.war --redeploy-affected`
-1. Rerun the investigation steps, and confirm that the application is not longer vulnerable.
+1. Download a version of the `log4j-core` and `log4j-api` library JARs that have had the Log4Shell vulnerability patched. These JARs can be accessed [here](https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.17.1/log4j-core-2.17.1.jar) and [here](https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.17.1/log4j-api-2.17.1.jar).
+1. In the JBoss CLI, execute the following command to overlay log4j-core: `deployment-overlay add --name=log4shellOverlay --content=/WEB-INF/lib/log4j-core-2.11.2.jar=/path/to/patched/log4j-core.jar --deployments=log4shell-lab.war --redeploy-affected`
+1. In the JBoss CLI, execute the following command to overlay log4j-api: `deployment-overlay add --name=log4shellApiOverlay --content=/WEB-INF/lib/log4j-api-2.11.2.jar=/path/to/patched/log4j-api.jar --deployments=log4shell-lab.war --redeploy-affected`
+1. Rerun the investigation steps. There should be no additional requests listed on the Huntress results page, confirming that the application is not longer vulnerable.
 
 Credits
 ----------------------------
 
 - [EAP Quickstarts](https://github.com/jboss-developer/jboss-eap-quickstarts/)
-- [Hunter Log4Shell Vulnerability Tester](https://log4shell.huntress.com/)
+- [Huntress Log4Shell Vulnerability Tester](https://log4shell.huntress.com/)
